@@ -217,21 +217,21 @@ async function doTickDown() {
 async function tickDown() {
     document.querySelector("#timer").classList.remove("round-count");
     playHornStandard();
-    time = 11;
+    time = 21;
     await doTickDown();
 }
 async function tickDownExtraTime() {
     document.querySelector("#timer").classList.remove("round-count");
     playHornStandard();
     time = 61;
-    time = 21;
+    // time = 21;
     await doTickDown();
 }
 async function tickDownRound() {
     document.querySelector("#timer").classList.add("round-count");
     hornElem.play();
     time = (60 * 5) + 1;
-    time = 21;
+    // time = 21;
     await doTickDown();
 }
 
