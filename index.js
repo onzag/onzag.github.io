@@ -278,6 +278,31 @@ function startGame() {
     cycleTeams(true);
 }
 
+let extraId = 0;
+function addExtraInTeam(teamName) {
+    extraId++;
+    const extraName = "player" + extraId;
+
+    const lastIndexOfPlayerWithLeastTimeLeft = rotationIndex[teamName] % teamCount[teamName].length;
+    let newExtraIndex = (lastIndexOfPlayerWithLeastTimeLeft - 1);
+    if (newExtraIndex <= 0) {
+        newExtraIndex += teamCount[teamName].length;
+    }
+    // insert after that player
+    teamCount[teamName].splice(newExtraIndex, 0, extraName);
+
+    if (activeTeamA === teamName || activeTeamB === teamName) {
+        const isB = activeTeamB === teamName;
+
+        const liItem = document.createElement("li");
+        liItem.className = "user-select-none list-group-item list-group-item-action d-flex justify-content-between align-items-start";
+        liItem.innerHTML = `<div class="ms-2 me-auto">` +
+            `<div class="fw-bold">${escapeHtml(extraName)}</div><span class="team">${teamName}</span></div>`
+    
+        document.querySelector(isB ? "#team-b" : "#team-a").appendChild(liItem);
+    }
+}
+
 async function cycleTeams(extraTime) {
     teamRotationIndex++;
 
@@ -331,6 +356,14 @@ async function cycleTeams(extraTime) {
     
             document.querySelector(isB ? "#team-b" : "#team-a").appendChild(liItem);
         });
+
+        const addLiItem = document.createElement("li");
+        addLiItem.className = "user-select-none list-group-item list-group-item-action d-flex justify-content-between align-items-start";
+        addLiItem.innerHTML = `<div class="ms-2 me-auto"><div class="fw-bold">+</div></div>`;
+
+        addLiItem.addEventListener("click", addExtraInTeam.bind(null, [activeTeamA, activeTeamB][index]));
+
+        document.querySelector(isB ? "#team-b" : "#team-a").appendChild(addLiItem);
     });
 
     if (extraTime) {
